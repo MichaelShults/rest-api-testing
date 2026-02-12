@@ -1,0 +1,82 @@
+{
+  "info": {
+    "_postman_id": "...",
+    "name": "Main Flow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "#",
+    "_collection_link": "https://go.postman.co/collection/..."
+  },
+  "item": [
+    {
+      "name": "Create Base",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{vault:airtable-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Test Base\",\r\n    \"tables\": [\r\n      {\r\n        \"description\": \"A simple test table\",\r\n        \"fields\": [\r\n          {\r\n            \"description\": \"Field 1 description\",\r\n            \"name\": \"Field 1\",\r\n            \"type\": \"singleLineText\"\r\n          },\r\n          {\r\n            \"description\": \"Field 2 description\",\r\n            \"name\": \"Field 2\",\r\n            \"type\": \"singleLineText\"\r\n          }\r\n        ],\r\n        \"name\": \"Test Table\"\r\n      }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/meta/bases",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "meta",
+            "bases"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.airtable.com/v0"
+    },
+    {
+      "key": "airtable-workspace-id",
+      "value": "WORKSPACE-ID"
+    }
+  ]
+}
