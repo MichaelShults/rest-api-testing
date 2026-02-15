@@ -14,9 +14,22 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
+              "pm.test(\"Status code is 200\", () => {\r",
               "    pm.response.to.have.status(200);\r",
-              "})"
+              "})\r",
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(response).to.be.an(\"object\");    \r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has id property of string type\", () => {\r",
+              "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+              "    const id = response.id;\r",
+              "    pm.expect(id).to.be.a(\"string\");\r",
+              "    pm.collectionVariables.set(\"base1_id\", id);\r",
+              "});"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -39,7 +52,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"name\": \"Base 1\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+          "raw": "{\r\n    \"name\": \"{{baseName1}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -66,9 +79,22 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
+              "pm.test(\"Status code is 200\", () => {\r",
               "    pm.response.to.have.status(200);\r",
-              "})"
+              "})\r",
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(response).to.be.an(\"object\");    \r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has id property of string type\", () => {\r",
+              "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+              "    const id = response.id;\r",
+              "    pm.expect(id).to.be.a(\"string\");\r",
+              "    pm.collectionVariables.set(\"base2_id\", id);\r",
+              "});"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -91,7 +117,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"name\": \"Base 2\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+          "raw": "{\r\n    \"name\": \"{{baseName2}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -121,6 +147,30 @@
               "pm.test(\"Status code is 200\", function () {\r",
               "    pm.response.to.have.status(200);\r",
               "})\r",
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response is an object\", () =>{\r",
+              "    pm.expect(response).to.be.an(\"object\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has a array property named 'bases'\", () =>{\r",
+              "    pm.expect(response).to.haveOwnProperty(\"bases\");\r",
+              "    pm.expect(response.bases).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Bases array's elements have id, name and permissionLevel properties\", () => {\r",
+              "    const numOfBases = response.bases.length;\r",
+              "    pm.expect(numOfBases).to.be.eql(2);\r",
+              "    for (let i=0; i<2; i++){\r",
+              "        const base = response.bases[i];\r",
+              "        pm.expect(base).to.be.an(\"object\");\r",
+              "        pm.expect(base).to.haveOwnProperty(\"id\");\r",
+              "        pm.expect(base).to.haveOwnProperty(\"name\");\r",
+              "        pm.expect(base).to.haveOwnProperty(\"permissionLevel\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
               ""
             ],
             "type": "text/javascript",
@@ -200,6 +250,22 @@
     {
       "key": "airtable-workspace-id",
       "value": "WORKSPACE-ID"
+    },
+    {
+      "key": "baseName1",
+      "value": ""
+    },
+    {
+      "key": "baseName2",
+      "value": ""
+    },
+    {
+      "key": "base1_id",
+      "value": ""
+    },
+    {
+      "key": "base2_id",
+      "value": ""
     }
   ]
 }
