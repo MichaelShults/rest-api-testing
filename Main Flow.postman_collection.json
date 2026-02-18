@@ -468,6 +468,7 @@
               "\r",
               "pm.test(\"The number of records in response matches number of records in request\", () => {\r",
               "    const recordsCount = JSON.parse(pm.request.body.raw).records.length;\r",
+              "    pm.collectionVariables.set(\"recordsCount\", recordsCount);\r",
               "    pm.expect(response.records.length).to.be.eql(recordsCount);\r",
               "});\r",
               "\r",
@@ -513,6 +514,106 @@
         "body": {
           "mode": "raw",
           "raw": "{\r\n    \"records\": [\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 1\",\r\n                \"Test checkbox\": true,\r\n                \"Test email\": \"test1@example.com\"\r\n            }\r\n        },\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 2\",\r\n                \"Test checkbox\": false,\r\n                \"Test email\": \"test2@example.com\"\r\n            }\r\n        }\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/:baseId/:tableId",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            ":baseId",
+            ":tableId"
+          ],
+          "variable": [
+            {
+              "key": "baseId",
+              "value": "{{base1_id}}"
+            },
+            {
+              "key": "tableId",
+              "value": "{{tableId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Records",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "\r",
+              "const response = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Response is an object\", () => {\r",
+              "    pm.expect(response).to.be.an(\"object\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response has an array type records property\", () => {\r",
+              "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
+              "    pm.expect(response.records).to.be.an(\"array\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"The number of records in response matches expected number of records\", () => {\r",
+              "     pm.expect(response.records.length).to.be.eql(pm.collectionVariables.get(\"recordsCount\"));\r",
+              " });\r",
+              "\r",
+              "pm.test(\"The records are objects\", () => {\r",
+              "    const records = response.records;\r",
+              "    for (let i = 0; i < records.length; i++){\r",
+              "        pm.expect(records[i]).to.be.an(\"object\");\r",
+              "    }\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{vault:airtable-token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
           "options": {
             "raw": {
               "language": "json"
@@ -599,6 +700,11 @@
     {
       "key": "fieldsCount",
       "value": ""
+    },
+    {
+      "key": "recordsCount",
+      "value": "",
+      "type": "default"
     }
   ]
 }
