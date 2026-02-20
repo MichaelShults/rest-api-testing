@@ -785,6 +785,182 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Record data and structure is correct\", ()=> {\r",
+                  "    pm.expect(response).to.be.eql(pm.collectionVariables.get(\"expectedRecord\"));\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{vault:airtable-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":baseId",
+                ":tableId",
+                ":recordId"
+              ],
+              "variable": [
+                {
+                  "key": "baseId",
+                  "value": "{{base1_id}}"
+                },
+                {
+                  "key": "tableId",
+                  "value": "{{tableId}}"
+                },
+                {
+                  "key": "recordId",
+                  "value": "{{recordId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response has deleted field with value 'true'\", () => {\r",
+                  "    pm.expect(response).to.be.haveOwnProperty(\"deleted\");\r",
+                  "    pm.expect(response.deleted).to.be.true;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has id field with the correct record id\", () => {\r",
+                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                  "    pm.expect(response.id).to.be.a(\"string\");\r",
+                  "    pm.expect(response.id).to.be.eql(pm.collectionVariables.get(\"recordId\"));\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{vault:airtable-token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":baseId",
+                ":tableId",
+                ":recordId"
+              ],
+              "variable": [
+                {
+                  "key": "baseId",
+                  "value": "{{base1_id}}"
+                },
+                {
+                  "key": "tableId",
+                  "value": "{{tableId}}"
+                },
+                {
+                  "key": "recordId",
+                  "value": "{{recordId}}"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ],
       "event": [
