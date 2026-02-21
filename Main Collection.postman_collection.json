@@ -11,986 +11,928 @@
       "name": "Happy Path",
       "item": [
         {
-          "name": "Create Base",
-          "event": [
+          "name": "Bases",
+          "item": [
             {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has valid id\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    const id = response.id;\r",
-                  "    pm.expect(id).to.be.a(\"string\");\r",
-                  "    pm.collectionVariables.set(\"base1_id\", id);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response has a non empty tables array\", ()=> {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"tables\");\r",
-                  "    pm.expect(response.tables).to.be.an(\"array\");\r",
-                  "    pm.expect(response.tables.length).to.be.above(0);\r",
-                  "})"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Create Bases",
+              "item": [
                 {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"{{baseName1}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Another Base",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has valid id\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    const id = response.id;\r",
-                  "    pm.expect(id).to.be.a(\"string\");\r",
-                  "    pm.collectionVariables.set(\"base2_id\", id);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response has a non empty tables array\", ()=> {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"tables\");\r",
-                  "    pm.expect(response.tables).to.be.an(\"array\");\r",
-                  "    pm.expect(response.tables.length).to.be.above(0);\r",
-                  "})"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"{{baseName2}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All Bases",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has a bases array\", () =>{\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"bases\");\r",
-                  "    pm.expect(response.bases).to.be.an(\"array\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"There are a total of two bases\", () => {\r",
-                  "    pm.expect(response.bases.length).to.be.eql(2);\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Bases in array have id, name and permissionLevel properties\", () => {\r",
-                  "    for (let i=0; i<2; i++){\r",
-                  "        const base = response.bases[i];\r",
-                  "        pm.expect(base).to.be.an(\"object\");\r",
-                  "        pm.expect(base).to.haveOwnProperty(\"id\");\r",
-                  "        pm.expect(base).to.haveOwnProperty(\"name\");\r",
-                  "        pm.expect(base).to.haveOwnProperty(\"permissionLevel\");\r",
-                  "    }\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"id, name and permissionLevel are strings\", () => {\r",
-                  "    for (let i=0; i<2; i++){\r",
-                  "        const base = response.bases[i];\r",
-                  "        pm.expect(base.id).to.be.a(\"string\");\r",
-                  "        pm.expect(base.name).to.be.a(\"string\");\r",
-                  "        pm.expect(base.permissionLevel).to.be.a(\"string\");\r",
-                  "    }\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Table",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has properties id, primaryFieldId, name, description, fields\", ()=> {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"primaryFieldId\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"name\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"description\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"id, primaryFieldId, name, description are strings\", () => {\r",
-                  "    pm.expect(response.id).to.be.a(\"string\");\r",
-                  "    pm.collectionVariables.set(\"tableId\", response.id);\r",
-                  "    pm.expect(response.primaryFieldId).to.be.a(\"string\");\r",
-                  "    pm.expect(response.name).to.be.a(\"string\");\r",
-                  "    pm.expect(response.description).to.be.a(\"string\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"fields is an array with the correct number of items\", () => {\r",
-                  "    pm.expect(response.fields).to.be.an(\"array\");\r",
-                  "    const fieldsCount = JSON.parse(pm.request.body.raw).fields.length;\r",
-                  "    pm.expect(response.fields.length).to.be.eql(fieldsCount);\r",
-                  "    pm.collectionVariables.set(\"fieldsCount\", fieldsCount);\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"description\": \"Another test table description\",\r\n    \"fields\": [\r\n        {\r\n            \"description\": \"Description of name\",\r\n            \"name\": \"Name\",\r\n            \"type\": \"singleLineText\"\r\n        },\r\n        {\r\n            \"name\": \"Test checkbox\",\r\n            \"options\": {\r\n                \"color\": \"greenBright\",\r\n                \"icon\": \"check\"\r\n            },\r\n            \"type\": \"checkbox\"\r\n        },\r\n        {\r\n            \"name\":\"Test email\",\r\n            \"type\":\"email\"\r\n        }\r\n    ],\r\n    \"name\": \"Another test table\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases/:baseId/tables",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases",
-                ":baseId",
-                "tables"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update Table",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has properties id, primaryFieldId, name, description, fields\", ()=> {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"primaryFieldId\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"name\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"description\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"id, primaryFieldId, name, description are strings\", () => {\r",
-                  "    pm.expect(response.id).to.be.a(\"string\");\r",
-                  "    pm.expect(response.primaryFieldId).to.be.a(\"string\");\r",
-                  "    pm.expect(response.name).to.be.a(\"string\");\r",
-                  "    pm.expect(response.description).to.be.a(\"string\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"fields is an array with the correct number of items\", () => {\r",
-                  "    pm.expect(response.fields).to.be.an(\"array\");\r",
-                  "    const fieldsCount = pm.collectionVariables.get(\"fieldsCount\")\r",
-                  "    pm.expect(response.fields.length).to.be.eql(fieldsCount);\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \r\n    \"name\":\"Another test table - name updated\" ,\r\n    \"description\":\"Another test table description - description updated\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases/:baseId/tables/:tableId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases",
-                ":baseId",
-                "tables",
-                ":tableId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "name": "Create Base",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"{{baseName1}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/meta/bases",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "meta",
+                        "bases"
+                      ]
+                    }
+                  },
+                  "response": []
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
+                  "name": "Create Another Base",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"{{baseName2}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/meta/bases",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "meta",
+                        "bases"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {},
+                    "exec": [
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {},
+                    "exec": [
+                      "const NUMBER_OF_BASES = Number(pm.collectionVariables.get(\"number_of_bases\"));\r",
+                      "let base_index = Number(pm.collectionVariables.get(\"_current_create_base_index\"));\r",
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "\r",
+                      "\r",
+                      "if (base_index > NUMBER_OF_BASES) {\r",
+                      "    base_index = 1\r",
+                      "}\r",
+                      "\r",
+                      "pm.test(\"Response has valid id\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                      "    const id = response.id;\r",
+                      "    pm.expect(id).to.be.a(\"string\");\r",
+                      "    pm.collectionVariables.set(`base${base_index}_id`, id);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response has a non empty tables array\", ()=> {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"tables\");\r",
+                      "    pm.expect(response.tables).to.be.an(\"array\");\r",
+                      "    pm.expect(response.tables.length).to.be.above(0);\r",
+                      "})\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"_current_create_base_index\", base_index+1);\r",
+                      ""
+                    ]
+                  }
                 }
               ]
+            },
+            {
+              "name": "Get All Bases",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has a bases array\", () =>{\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"bases\");\r",
+                      "    pm.expect(response.bases).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"There are a total of two bases\", () => {\r",
+                      "    pm.expect(response.bases.length).to.be.eql(2);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Bases in array have id, name and permissionLevel properties\", () => {\r",
+                      "    for (let i=0; i<2; i++){\r",
+                      "        const base = response.bases[i];\r",
+                      "        pm.expect(base).to.be.an(\"object\");\r",
+                      "        pm.expect(base).to.haveOwnProperty(\"id\");\r",
+                      "        pm.expect(base).to.haveOwnProperty(\"name\");\r",
+                      "        pm.expect(base).to.haveOwnProperty(\"permissionLevel\");\r",
+                      "    }\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"id, name and permissionLevel are strings\", () => {\r",
+                      "    for (let i=0; i<2; i++){\r",
+                      "        const base = response.bases[i];\r",
+                      "        pm.expect(base.id).to.be.a(\"string\");\r",
+                      "        pm.expect(base.name).to.be.a(\"string\");\r",
+                      "        pm.expect(base.permissionLevel).to.be.a(\"string\");\r",
+                      "    }\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases"
+                  ]
+                }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ]
         },
         {
-          "name": "Create Records",
-          "event": [
+          "name": "Tables",
+          "item": [
             {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "const request_records_array =  JSON.parse(pm.request.body.raw).records;\r",
-                  "\r",
-                  "pm.test(\"Response has an array type records property\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
-                  "    pm.expect(response.records).to.be.an(\"array\");\r",
-                  "});\r",
-                  "\r",
-                  "const records = response.records;\r",
-                  "\r",
-                  "pm.test(\"The number of records in response matches number of records in request\", () => {\r",
-                  "    const recordsCount = request_records_array.length;\r",
-                  "    pm.collectionVariables.set(\"recordsCount\", recordsCount);\r",
-                  "    pm.expect(records.length).to.be.eql(recordsCount);\r",
-                  "});\r",
-                  "\r",
-                  "\r",
-                  "pm.test(\"The records are objects\", () => {\r",
-                  "    for (let i = 0; i < records.length; i++){\r",
-                  "        pm.expect(records[i]).to.be.an(\"object\");\r",
-                  "    }\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Records have properties: id (string), createdTime (string), fields (object)\", () => {\r",
-                  "    records.forEach((record) => {\r",
-                  "        pm.expect(record).to.haveOwnProperty(\"id\");\r",
-                  "        pm.expect(record.id).to.be.a(\"string\");\r",
-                  "        pm.expect(record).to.haveOwnProperty(\"createdTime\");\r",
-                  "        pm.expect(record.createdTime).to.be.a(\"string\");\r",
-                  "        pm.expect(record).haveOwnProperty(\"fields\");\r",
-                  "        pm.expect(record.fields).to.be.an(\"object\");\r",
-                  "    });\r",
-                  "} );\r",
-                  "\r",
-                  "pm.collectionVariables.set(\"recordsObject\", JSON.stringify(records));\r",
-                  "\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Create Table",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"records\": [\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 1\",\r\n                \"Test checkbox\": true,\r\n                \"Test email\": \"{{$randomExampleEmail}}\"\r\n            }\r\n        },\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 2\",\r\n                \"Test checkbox\": false,\r\n                \"Test email\": \"{{$randomExampleEmail}}\"\r\n            }\r\n        }\r\n    ]\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                ":baseId",
-                ":tableId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has properties id, primaryFieldId, name, description, fields\", ()=> {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"primaryFieldId\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"name\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"description\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"id, primaryFieldId, name, description are strings\", () => {\r",
+                      "    pm.expect(response.id).to.be.a(\"string\");\r",
+                      "    pm.collectionVariables.set(\"tableId\", response.id);\r",
+                      "    pm.expect(response.primaryFieldId).to.be.a(\"string\");\r",
+                      "    pm.expect(response.name).to.be.a(\"string\");\r",
+                      "    pm.expect(response.description).to.be.a(\"string\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"fields is an array with the correct number of items\", () => {\r",
+                      "    pm.expect(response.fields).to.be.an(\"array\");\r",
+                      "    const fieldsCount = JSON.parse(pm.request.body.raw).fields.length;\r",
+                      "    pm.expect(response.fields.length).to.be.eql(fieldsCount);\r",
+                      "    pm.collectionVariables.set(\"fieldsCount\", fieldsCount);\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"description\": \"Another test table description\",\r\n    \"fields\": [\r\n        {\r\n            \"description\": \"Description of name\",\r\n            \"name\": \"Name\",\r\n            \"type\": \"singleLineText\"\r\n        },\r\n        {\r\n            \"name\": \"Test checkbox\",\r\n            \"options\": {\r\n                \"color\": \"greenBright\",\r\n                \"icon\": \"check\"\r\n            },\r\n            \"type\": \"checkbox\"\r\n        },\r\n        {\r\n            \"name\":\"Test email\",\r\n            \"type\":\"email\"\r\n        }\r\n    ],\r\n    \"name\": \"Another test table\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases/:baseId/tables",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases",
+                    ":baseId",
+                    "tables"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Table",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has properties id, primaryFieldId, name, description, fields\", ()=> {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"primaryFieldId\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"name\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"description\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"id, primaryFieldId, name, description are strings\", () => {\r",
+                      "    pm.expect(response.id).to.be.a(\"string\");\r",
+                      "    pm.expect(response.primaryFieldId).to.be.a(\"string\");\r",
+                      "    pm.expect(response.name).to.be.a(\"string\");\r",
+                      "    pm.expect(response.description).to.be.a(\"string\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"fields is an array with the correct number of items\", () => {\r",
+                      "    pm.expect(response.fields).to.be.an(\"array\");\r",
+                      "    const fieldsCount = pm.collectionVariables.get(\"fieldsCount\")\r",
+                      "    pm.expect(response.fields.length).to.be.eql(Number(fieldsCount));\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \r\n    \"name\":\"Another test table - name updated\" ,\r\n    \"description\":\"Another test table description - description updated\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases/:baseId/tables/:tableId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases",
+                    ":baseId",
+                    "tables",
+                    ":tableId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ]
         },
         {
-          "name": "List Records",
-          "event": [
+          "name": "Records",
+          "item": [
             {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "const records = response.records;\r",
-                  "\r",
-                  "pm.test(\"Response has an array type records property\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
-                  "    pm.expect(records).to.be.an(\"array\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"The records are objects\", () => {\r",
-                  "    for (let i = 0; i < records.length; i++){\r",
-                  "        pm.expect(records[i]).to.be.an(\"object\");\r",
-                  "    }\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Records have properties: id property\", () => {\r",
-                  "    records.forEach((record) => {\r",
-                  "        pm.expect(record).to.haveOwnProperty(\"id\");\r",
-                  "        pm.expect(record.id).to.be.a(\"string\");\r",
-                  "    });\r",
-                  "} );\r",
-                  "\r",
-                  "// note: ordering unclear, that is why sorting is needed\r",
-                  "pm.test(\"Records match the created records\", () => {\r",
-                  "    let created_records = JSON.parse(pm.collectionVariables.get(\"recordsObject\"));\r",
-                  "    let response_records = [...records];\r",
-                  "    const byId = (a, b) => a.id.localeCompare(b.id);\r",
-                  "    created_records.sort(byId);\r",
-                  "    response_records.sort(byId);\r",
-                  "    pm.expect(created_records).to.be.eql(response_records);\r",
-                  "    pm.collectionVariables.set(\"recordId\", created_records[0].id)\r",
-                  "});\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Create Records",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                ":baseId",
-                ":tableId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "const request_records_array =  JSON.parse(pm.request.body.raw).records;\r",
+                      "\r",
+                      "pm.test(\"Response has an array type records property\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
+                      "    pm.expect(response.records).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "const records = response.records;\r",
+                      "\r",
+                      "pm.test(\"The number of records in response matches number of records in request\", () => {\r",
+                      "    const recordsCount = request_records_array.length;\r",
+                      "    pm.collectionVariables.set(\"recordsCount\", recordsCount);\r",
+                      "    pm.expect(records.length).to.be.eql(recordsCount);\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"The records are objects\", () => {\r",
+                      "    for (let i = 0; i < records.length; i++){\r",
+                      "        pm.expect(records[i]).to.be.an(\"object\");\r",
+                      "    }\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Records have properties: id (string), createdTime (string), fields (object)\", () => {\r",
+                      "    records.forEach((record) => {\r",
+                      "        pm.expect(record).to.haveOwnProperty(\"id\");\r",
+                      "        pm.expect(record.id).to.be.a(\"string\");\r",
+                      "        pm.expect(record).to.haveOwnProperty(\"createdTime\");\r",
+                      "        pm.expect(record.createdTime).to.be.a(\"string\");\r",
+                      "        pm.expect(record).to.haveOwnProperty(\"fields\");\r",
+                      "        pm.expect(record.fields).to.be.an(\"object\");\r",
+                      "    });\r",
+                      "} );\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"recordsObject\", JSON.stringify(records));\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update record - Patch",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has createdTime and id properties of type string\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"createdTime\");\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    pm.expect(response.createdTime).to.be.a(\"string\");\r",
-                  "    pm.expect(response.id).to.be.a(\"string\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response has an object-type fields property\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
-                  "    pm.expect(response.fields).to.be.an(\"object\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"record id in response identical to record id in request\", () => {\r",
-                  "    pm.expect(response.id).to.be.eql(pm.collectionVariables.get(\"recordId\"));\r",
-                  "});\r",
-                  "\r",
-                  "pm.collectionVariables.set(\"expectedRecord\", JSON.stringify(response));"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"fields\": {\r\n        \"Name\": \"test name 2 - modified\",\r\n        \"Test checkbox\": true\r\n    }\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
-              "host": [
-                "{{baseUrl}}"
               ],
-              "path": [
-                ":baseId",
-                ":tableId",
-                ":recordId"
-              ],
-              "variable": [
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"records\": [\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 1\",\r\n                \"Test checkbox\": true,\r\n                \"Test email\": \"{{$randomExampleEmail}}\"\r\n            }\r\n        },\r\n        {\r\n            \"fields\": {\r\n                \"Name\": \"test name 2\",\r\n                \"Test checkbox\": false,\r\n                \"Test email\": \"{{$randomExampleEmail}}\"\r\n            }\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "List Records",
+              "event": [
                 {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "const records = response.records;\r",
+                      "\r",
+                      "pm.test(\"Response has an array type records property\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
+                      "    pm.expect(records).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"The records are objects\", () => {\r",
+                      "    for (let i = 0; i < records.length; i++){\r",
+                      "        pm.expect(records[i]).to.be.an(\"object\");\r",
+                      "    }\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Records have properties: id property\", () => {\r",
+                      "    records.forEach((record) => {\r",
+                      "        pm.expect(record).to.haveOwnProperty(\"id\");\r",
+                      "        pm.expect(record.id).to.be.a(\"string\");\r",
+                      "    });\r",
+                      "} );\r",
+                      "\r",
+                      "// note: ordering unclear, that is why sorting is needed\r",
+                      "pm.test(\"Records match the created records\", () => {\r",
+                      "    let created_records = JSON.parse(pm.collectionVariables.get(\"recordsObject\"));\r",
+                      "    let response_records = [...records];\r",
+                      "    const byId = (a, b) => a.id.localeCompare(b.id);\r",
+                      "    created_records.sort(byId);\r",
+                      "    response_records.sort(byId);\r",
+                      "    pm.expect(created_records).to.be.eql(response_records);\r",
+                      "    pm.collectionVariables.set(\"recordId\", created_records[0].id)\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
-                },
-                {
-                  "key": "recordId",
-                  "value": "{{recordId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "List Records After Updating Record",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has an array type records property\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
-                  "    pm.expect(response.records).to.be.an(\"array\");\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"The number of records in response matches expected number of records\", () => {\r",
-                  "     pm.expect(response.records.length).to.be.eql(pm.collectionVariables.get(\"recordsCount\"));\r",
-                  " });\r",
-                  "\r",
-                  "pm.test(\"The records are objects\", () => {\r",
-                  "    const records = response.records;\r",
-                  "    for (let i = 0; i < records.length; i++){\r",
-                  "        pm.expect(records[i]).to.be.an(\"object\");\r",
-                  "    }\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Record was updated correctly\", ()=> {\r",
-                  "    const record = response.records.find((record) => {\r",
-                  "        return record.id === pm.collectionVariables.get(\"recordId\");\r",
-                  "    });\r",
-                  "    pm.expect(record).to.be.an(\"object\");\r",
-                  "    pm.expect(record).to.be.eql(JSON.parse(pm.collectionVariables.get(\"expectedRecord\")));\r",
-                  "});\r",
-                  "\r",
-                  "\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
             },
             {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Update record - Patch",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                ":baseId",
-                ":tableId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has createdTime and id properties of type string\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"createdTime\");\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                      "    pm.expect(response.createdTime).to.be.a(\"string\");\r",
+                      "    pm.expect(response.id).to.be.a(\"string\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response has an object-type fields property\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"fields\");\r",
+                      "    pm.expect(response.fields).to.be.an(\"object\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"record id in response identical to record id in request\", () => {\r",
+                      "    pm.expect(response.id).to.be.eql(pm.collectionVariables.get(\"recordId\"));\r",
+                      "});\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"expectedRecord\", JSON.stringify(response));"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Record",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Record data and structure is correct\", ()=> {\r",
-                  "    pm.expect(response).to.be.eql(JSON.parse(pm.collectionVariables.get(\"expectedRecord\")));\r",
-                  "});\r",
-                  "\r",
-                  "\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
-              "host": [
-                "{{baseUrl}}"
               ],
-              "path": [
-                ":baseId",
-                ":tableId",
-                ":recordId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fields\": {\r\n        \"Name\": \"test name 2 - modified\",\r\n        \"Test checkbox\": true\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
                 },
-                {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
-                },
-                {
-                  "key": "recordId",
-                  "value": "{{recordId}}"
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId",
+                    ":recordId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    },
+                    {
+                      "key": "recordId",
+                      "value": "{{recordId}}"
+                    }
+                  ]
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete Record",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "const response = pm.response.json();\r",
-                  "\r",
-                  "pm.test(\"Response has deleted field with value 'true'\", () => {\r",
-                  "    pm.expect(response).to.be.haveOwnProperty(\"deleted\");\r",
-                  "    pm.expect(response.deleted).to.be.true;\r",
-                  "});\r",
-                  "\r",
-                  "pm.test(\"Response has id field with the correct record id\", () => {\r",
-                  "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
-                  "    pm.expect(response.id).to.be.a(\"string\");\r",
-                  "    pm.expect(response.id).to.be.eql(pm.collectionVariables.get(\"recordId\"));\r",
-                  "});\r",
-                  "\r",
-                  "\r",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
+              },
+              "response": []
             },
             {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "List Records After Updating Record",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{vault:airtable-token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                ":baseId",
-                ":tableId",
-                ":recordId"
-              ],
-              "variable": [
-                {
-                  "key": "baseId",
-                  "value": "{{base1_id}}"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has an array type records property\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"records\");\r",
+                      "    pm.expect(response.records).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"The number of records in response matches expected number of records\", () => {\r",
+                      "     pm.expect(response.records.length).to.be.eql(Number(pm.collectionVariables.get(\"recordsCount\")));\r",
+                      " });\r",
+                      "\r",
+                      "pm.test(\"The records are objects\", () => {\r",
+                      "    const records = response.records;\r",
+                      "    for (let i = 0; i < records.length; i++){\r",
+                      "        pm.expect(records[i]).to.be.an(\"object\");\r",
+                      "    }\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Record was updated correctly\", ()=> {\r",
+                      "    const record = response.records.find((record) => {\r",
+                      "        return record.id === pm.collectionVariables.get(\"recordId\");\r",
+                      "    });\r",
+                      "    pm.expect(record).to.be.an(\"object\");\r",
+                      "    pm.expect(record).to.be.eql(JSON.parse(pm.collectionVariables.get(\"expectedRecord\")));\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "tableId",
-                  "value": "{{tableId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Record",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Record data and structure is correct\", ()=> {\r",
+                      "    pm.expect(response).to.be.eql(JSON.parse(pm.collectionVariables.get(\"expectedRecord\")));\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 },
                 {
-                  "key": "recordId",
-                  "value": "{{recordId}}"
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId",
+                    ":recordId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    },
+                    {
+                      "key": "recordId",
+                      "value": "{{recordId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Record",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Response has deleted field with value 'true'\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"deleted\");\r",
+                      "    pm.expect(response.deleted).to.be.true;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response has id field with the correct record id\", () => {\r",
+                      "    pm.expect(response).to.haveOwnProperty(\"id\");\r",
+                      "    pm.expect(response.id).to.be.a(\"string\");\r",
+                      "    pm.expect(response.id).to.be.eql(pm.collectionVariables.get(\"recordId\"));\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:baseId/:tableId/:recordId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":baseId",
+                    ":tableId",
+                    ":recordId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "baseId",
+                      "value": "{{base1_id}}"
+                    },
+                    {
+                      "key": "tableId",
+                      "value": "{{tableId}}"
+                    },
+                    {
+                      "key": "recordId",
+                      "value": "{{recordId}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
             }
-          },
-          "response": []
+          ]
         }
       ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{vault:airtable-token}}",
+            "type": "string"
+          }
+        ]
+      },
       "event": [
         {
           "listen": "prerequest",
@@ -1028,190 +970,214 @@
       "name": "Missing Authentication",
       "item": [
         {
-          "name": "Get All Bases - No Auth",
-          "event": [
+          "name": "No Auth",
+          "item": [
             {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All Bases - Invalid Token",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Get All Bases - No Auth",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{invalid_airtable_token}}",
-                  "type": "string"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
               ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Base - No Auth",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"{{baseName1}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases"
+                  ]
                 }
-              }
+              },
+              "response": []
             },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create Base - Invalid Token",
-          "event": [
             {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+              "name": "Create Base - No Auth",
+              "event": [
                 {
-                  "key": "token",
-                  "value": "{{invalid_airtable_token}}",
-                  "type": "string"
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
-              ]
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"BASE 321\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Invalid Token",
+          "item": [
+            {
+              "name": "Get All Bases - Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases"
+                  ]
+                }
+              },
+              "response": []
             },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"{{baseName1}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+            {
+              "name": "Create Base - Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"BASE 123\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/meta/bases",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "meta",
+                    "bases"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{invalid_airtable_token}}",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
               }
             },
-            "url": {
-              "raw": "{{baseUrl}}/meta/bases",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "meta",
-                "bases"
-              ]
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
             }
-          },
-          "response": []
+          ]
         }
       ],
       "event": [
@@ -1296,11 +1262,11 @@
     },
     {
       "key": "baseName1",
-      "value": ""
+      "value": "Base 1"
     },
     {
       "key": "baseName2",
-      "value": ""
+      "value": "Base 1"
     },
     {
       "key": "base1_id",
@@ -1324,8 +1290,7 @@
     },
     {
       "key": "recordId",
-      "value": "",
-      "type": "default"
+      "value": ""
     },
     {
       "key": "expectedRecord",
@@ -1333,12 +1298,19 @@
     },
     {
       "key": "invalid_airtable_token",
-      "value": "",
-      "type": "default"
+      "value": ""
     },
     {
       "key": "recordsObject",
       "value": ""
+    },
+    {
+      "key": "_current_create_base_index",
+      "value": "1"
+    },
+    {
+      "key": "number_of_bases",
+      "value": "2"
     }
   ]
 }
