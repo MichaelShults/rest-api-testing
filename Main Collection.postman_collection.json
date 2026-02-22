@@ -392,6 +392,30 @@
               },
               "response": []
             }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
           ]
         },
         {
@@ -1221,6 +1245,165 @@
               "    pm.expect(error.message).to.be.a(\"string\");\r",
               "    pm.expect(error.type).to.be.eql(AUTHENTICATION_ERROR_TYPE);\r",
               "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative Tests - Request Body",
+      "item": [
+        {
+          "name": "Create Base - Blank 'name'",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const ERROR_TYPE = \"INVALID_REQUEST_UNKNOWN\";\r",
+                  "\r",
+                  "pm.test(\"Status code is 422\", function () {\r",
+                  "    pm.response.to.have.status(422);\r",
+                  "})\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an object\", () => {\r",
+                  "    pm.expect(response).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has valid authentication required error\", () => {\r",
+                  "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
+                  "    const error = response.error;\r",
+                  "    pm.expect(error).to.be.an(\"object\");\r",
+                  "    pm.expect(error).to.haveOwnProperty(\"type\");\r",
+                  "    pm.expect(error).to.haveOwnProperty(\"message\");\r",
+                  "    pm.expect(error.type).to.be.a(\"string\");\r",
+                  "    pm.expect(error.message).to.be.a(\"string\");\r",
+                  "    pm.expect(error.type).to.be.eql(ERROR_TYPE);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"{{airtable-workspace-id}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meta/bases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meta",
+                "bases"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Base - Blank 'workspaceId'",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const ERROR_TYPE = \"MODEL_ID_NOT_FOUND\";\r",
+                  "\r",
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "})\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an object\", () => {\r",
+                  "    pm.expect(response).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has valid authentication required error\", () => {\r",
+                  "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
+                  "    const error = response.error;\r",
+                  "    pm.expect(error).to.be.an(\"object\");\r",
+                  "    pm.expect(error).to.haveOwnProperty(\"type\");\r",
+                  "    pm.expect(error.type).to.be.a(\"string\");\r",
+                  "    pm.expect(error.type).to.be.eql(ERROR_TYPE);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Table {{$randomUUI}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meta/bases",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meta",
+                "bases"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{vault:airtable-token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
             ]
           }
         }
