@@ -23,7 +23,7 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          ""
+                          "// Common tests defined in the \"Create Bases\" folder"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -63,7 +63,7 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          ""
+                          "// Common tests defined in the \"Create Bases\" folder"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -991,7 +991,7 @@
       ]
     },
     {
-      "name": "Missing Authentication",
+      "name": "Missing Auth",
       "item": [
         {
           "name": "No Auth",
@@ -1003,7 +1003,7 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      ""
+                      "// Uses \"Missing Auth\" folder tests"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -1046,6 +1046,7 @@
                   "listen": "test",
                   "script": {
                     "exec": [
+                      "// Uses \"Missing Auth\" folder tests\r",
                       ""
                     ],
                     "type": "text/javascript",
@@ -1091,6 +1092,7 @@
                   "listen": "test",
                   "script": {
                     "exec": [
+                      "// Uses \"Missing Auth\" folder tests\r",
                       ""
                     ],
                     "type": "text/javascript",
@@ -1134,6 +1136,7 @@
                   "listen": "test",
                   "script": {
                     "exec": [
+                      "// Uses \"Missing Auth\" folder tests\r",
                       ""
                     ],
                     "type": "text/javascript",
@@ -1272,7 +1275,7 @@
                   "    pm.expect(response).to.be.an(\"object\");\r",
                   "});\r",
                   "\r",
-                  "pm.test(\"Response has valid authentication required error\", () => {\r",
+                  "pm.test(\"Response has valid required error\", () => {\r",
                   "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
                   "    const error = response.error;\r",
                   "    pm.expect(error).to.be.an(\"object\");\r",
@@ -1333,7 +1336,7 @@
                   "    pm.expect(response).to.be.an(\"object\");\r",
                   "});\r",
                   "\r",
-                  "pm.test(\"Response has valid authentication required error\", () => {\r",
+                  "pm.test(\"Response has valid required error\", () => {\r",
                   "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
                   "    const error = response.error;\r",
                   "    pm.expect(error).to.be.an(\"object\");\r",
@@ -1368,6 +1371,201 @@
               "path": [
                 "meta",
                 "bases"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{vault:airtable-token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative Tests - IDs in path",
+      "item": [
+        {
+          "name": "Create Table - Invalid baseId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "})\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an object\", () => {\r",
+                  "    pm.expect(response).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has an 'error' property\", () => {\r",
+                  "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"description\": \"Test table description\",\r\n    \"fields\": [\r\n        {\r\n            \"description\": \"Description of name\",\r\n            \"name\": \"Name\",\r\n            \"type\": \"singleLineText\"\r\n        },\r\n        {\r\n            \"name\": \"Test checkbox\",\r\n            \"options\": {\r\n                \"color\": \"greenBright\",\r\n                \"icon\": \"check\"\r\n            },\r\n            \"type\": \"checkbox\"\r\n        },\r\n        {\r\n            \"name\":\"Test email\",\r\n            \"type\":\"email\"\r\n        }\r\n    ],\r\n    \"name\": \"Another test table\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meta/bases/:baseId/tables",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meta",
+                "bases",
+                ":baseId",
+                "tables"
+              ],
+              "variable": [
+                {
+                  "key": "baseId",
+                  "value": "invalidid12345"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Records - Invalid tableId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const ERROR_TYPE = \"INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND\";\r",
+                  "\r",
+                  "pm.test(\"Status code is 403\", function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "})\r",
+                  "\r",
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response is an object\", () => {\r",
+                  "    pm.expect(response).to.be.an(\"object\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response has valid required error\", () => {\r",
+                  "    pm.expect(response).to.haveOwnProperty(\"error\");\r",
+                  "    const error = response.error;\r",
+                  "    pm.expect(error).to.be.an(\"object\");\r",
+                  "    pm.expect(error).to.haveOwnProperty(\"type\");\r",
+                  "    pm.expect(error).to.haveOwnProperty(\"message\");\r",
+                  "    pm.expect(error.type).to.be.a(\"string\");\r",
+                  "    pm.expect(error.message).to.be.a(\"string\");\r",
+                  "    pm.expect(error.type).to.be.eql(ERROR_TYPE);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:baseId/:tableId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":baseId",
+                ":tableId"
+              ],
+              "variable": [
+                {
+                  "key": "baseId",
+                  "value": "{{base1_id}}"
+                },
+                {
+                  "key": "tableId",
+                  "value": "invalidid12345"
+                }
               ]
             }
           },

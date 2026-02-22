@@ -1,4 +1,4 @@
-# REST API Testing (WIP)
+# REST API Testing
 **Testing the Airtable REST API with Postman**
 
 ## What Tests Include
@@ -22,7 +22,7 @@
 10. Get Record
 11. Delete Record
 
-### Missing Authentication
+### Missing Auth
 1. Get All Bases - No Auth
 2. Create Base - No Auth
 3. Get All Bases - Invalid Token
@@ -32,8 +32,9 @@
 1. Create Base - Blank 'name'
 2. Create Base - Blank 'workspaceId'
 
+### Negative Tests - IDs in path
+1. Create Table - Invalid baseId
+2. List Records - Invalid tableId
+
 ### Screenshots
-<img src="screenshot_22_02_2026.png" width="480">
-
-
-
+<img src="screenshot_22_02_2026.png" width="520">
