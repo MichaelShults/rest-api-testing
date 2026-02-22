@@ -614,7 +614,7 @@
               "response": []
             },
             {
-              "name": "Update record - Patch",
+              "name": "Update Record - Patch",
               "event": [
                 {
                   "listen": "test",
@@ -1353,7 +1353,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Table {{$randomUUI}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"\"\r\n}",
+              "raw": "{\r\n    \"name\": \"Table {{$randomUUID}}\",\r\n    \"tables\": [\r\n        {\r\n            \"description\": \"A simple test table\",\r\n            \"fields\": [\r\n                {\r\n                    \"description\": \"Field 1 description\",\r\n                    \"name\": \"Field 1\",\r\n                    \"type\": \"singleLineText\"\r\n                },\r\n                {\r\n                    \"description\": \"Field 2 description\",\r\n                    \"name\": \"Field 2\",\r\n                    \"type\": \"singleLineText\"\r\n                }\r\n            ],\r\n            \"name\": \"Test Table\"\r\n        }\r\n    ],\r\n    \"workspaceId\": \"\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1449,7 +1449,7 @@
     },
     {
       "key": "baseName2",
-      "value": "Base 1"
+      "value": "Base 2"
     },
     {
       "key": "base1_id",

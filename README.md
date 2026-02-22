@@ -1,4 +1,4 @@
-# Rest API Testing (WIP)
+# REST API Testing (WIP)
 **Testing the Airtable REST API with Postman**
 
 ## What Tests Include
