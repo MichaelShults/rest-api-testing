@@ -24,12 +24,16 @@
 
 ### Missing Authentication
 1. Get All Bases - No Auth
-2. Get All Bases - Invalid Token
-3. Create Base - No Auth
+2. Create Base - No Auth
+3. Get All Bases - Invalid Token
 4. Create Base - Invalid Token
 
+### Negative Tests - Request Body
+1. Create Base - Blank 'name'
+2. Create Base - Blank 'workspaceId'
+
 ### Screenshots
-<img src="screenshot_21_02_2026.png" width="480">
+<img src="screenshot_22_02_2026.png" width="480">
 
 
 
